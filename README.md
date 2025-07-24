@@ -9,7 +9,6 @@
 ## 1项目架构介绍
 
 ### 1.1简介
-<img width="384" height="285" alt="p1" src="https://github.com/user-attachments/assets/cfac8c81-fae5-43f4-b54a-22c7539c51ef" />
 
 本项目服务端基于SpringCloud+Redis+Gateway+Mysql+RabbitMQ组合来实现，具备分布式项目所拥有的高并发高可用的特性以及常用的灾备处理。客户端基于Vue+Webpack整合的单页面应用。后台管理系统架构组成为Vue+VueRouter+Vuex+ElementUI+Axios，移动端系统架构组成为Vue+VueRouter+Vuex+VantUI+Axios。
 
@@ -334,8 +333,7 @@ User-service服务是整个项目的核心业务模块，主要负责实现项�
 
 ### 3.1 Redis
 
-redis服务作为该项目的缓存查询和分布式锁的核心库存在。采用默认6379端口，无密码模式连接，本项目用于浏览商品模块。<img width="629" height="615" alt="系统架构图" src="https://github.com/user-attachments/assets/3a4a8e72-81c0-4b62-9669-6efb798853c1" />
-
+redis服务作为该项目的缓存查询和分布式锁的核心库存在。采用默认6379端口，无密码模式连接，本项目用于浏览商品模块。
 
 ### 3.2 RabbitMQ
 
