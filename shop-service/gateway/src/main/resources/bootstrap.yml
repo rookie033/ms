@@ -1,0 +1,83 @@
+server:
+  port: 8000
+spring:
+  redis:
+    database: 1
+    host: localhost
+    port: 6379
+    password:
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+    timeout: 3000
+  boot:
+    admin:
+      client:
+        url: http://localhost:9000
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/sp-service/v1/user/**
+          filters:
+            - RewritePath=/sp-service/v1/user/(?<segment>.*), /$\{segment}
+        - id: shop-service
+          uri: lb://shop-service
+          predicates:
+            - Path=/sp-service/v1/shop/**
+          filters:
+            - RewritePath=/sp-service/v1/shop/(?<segment>.*), /$\{segment}
+        - id: log-service
+          uri: lb://log-service
+          predicates:
+            - Path=/sp-service/v1/log/**
+          filters:
+            - RewritePath=/sp-service/v1/log/(?<segment>.*), /$\{segment}
+        - id: static-service
+          uri: lb://log-service
+          predicates:
+          - Path=/public/**
+          filters:
+          - RewritePath=/public/(?<segment>.*), /public/$\{segment}
+      discovery:
+        locator:
+          lower-case-service-id: true
+          enabled: true
+      enabled: true
+      default-filters:
+        - name: Hystrix
+          args:
+            name: default
+            fallbackUri: 'forward:/defaultfallback'
+  application:
+    name: gateway-service
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+          thread:
+            timeoutInMilliseconds: 30000
+  shareSecurityContext: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+logging:
+  file:
+    path: shop-log/gateway-service.log
+  level:
+    root: debug
